@@ -1,0 +1,23 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Pattern {
+  createdAt: String!
+  highlightImageUrl: String!
+  homepageUrl: String!
+  id: Int!
+  numFavorites: Float!
+  title: String!
+}
+
+type Query {
+  pattern(id: Int!): Pattern!
+  user(id: Int!): User!
+}
+
+type User {
+  firstName: String!
+  id: Int!
+  lastName: String!
+}
