@@ -1,7 +1,8 @@
-import { Resolver, Query, Mutation, Args, Int, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Parent, ResolveField } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { CreateUserInput } from './dto/create-user.input';
+import { Pattern } from 'src/patterns/patterns.entity';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -12,6 +13,7 @@ export class UsersResolver {
     return this.usersService.findOneById(id);
   }
 
+  @ResolveField((returns) => [Pattern])
   patterns(@Parent() author: User): Promise<Pattern[]> {
     return this.usersService.findPatterns(author.id);
   }

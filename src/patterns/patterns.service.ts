@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/user.entity';
 import { UsersService } from 'src/users/users.service';
@@ -10,6 +10,7 @@ import { Pattern } from './patterns.entity';
 export class PatternsService {
   constructor(
     @InjectRepository(Pattern) private patternsRepository: Repository<Pattern>,
+    @Inject(forwardRef(() => UsersService))
     private usersService: UsersService,
   ) {}
 
@@ -23,7 +24,11 @@ export class PatternsService {
     return this.patternsRepository.findOne(id);
   }
 
-  findOwner(ownerId: number): Promise<User> {
-    return this.usersService.findOneById(ownerId);
+  findAuthor(authorId: number): Promise<User> {
+    return this.usersService.findOneById(authorId);
+  }
+
+  findPatternsByAuthorId(authorId: number): Promise<Pattern[]> {
+    return this.patternsRepository.find({ where: { authorId } });
   }
 }

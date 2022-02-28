@@ -18,7 +18,7 @@ export class PatternsResolver {
 
   @ResolveField((returns) => User)
   author(@Parent() pattern: Pattern): Promise<User> {
-    return this.patternsService.findOwner(pattern.authorId);
+    return this.patternsService.findAuthor(pattern.authorId);
   }
 
   @Query((returns) => Pattern, { name: 'pattern' })
