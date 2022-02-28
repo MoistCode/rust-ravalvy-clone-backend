@@ -3,12 +3,23 @@
 # ------------------------------------------------------
 
 type Pattern {
-  createdAt: String!
-  highlightImageUrl: String!
-  homepageUrl: String!
   id: Int!
+  author: User!
+  authorId: Int!
+  createdAt: String!
+  highlightImageUrl: String
+  homepageUrl: String!
   numFavorites: Float!
   title: String!
+}
+
+type User {
+  id: Int!
+  firstName: String!
+  lastName: String!
+  password: String!
+  username: String!
+  patterns: [Pattern!]
 }
 
 type Query {
@@ -16,8 +27,20 @@ type Query {
   user(id: Int!): User!
 }
 
-type User {
+type Mutation {
+  createPattern(createPatternInput: CreatePatternInput!): Pattern!
+  createUser(createUserInput: CreateUserInput!): User!
+}
+
+input CreatePatternInput {
+  authorId: Int!
+  highlightImageUrl: String
+  title: String!
+}
+
+input CreateUserInput {
   firstName: String!
-  id: Int!
   lastName: String!
+  password: String!
+  username: String!
 }

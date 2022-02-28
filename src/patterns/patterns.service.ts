@@ -1,17 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/user.entity';
+import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
-
-import { Pattern } from './models/pattern.model';
+import { CreatePatternInput } from './dto/create-pattern.input';
+import { Pattern } from './patterns.entity';
 
 @Injectable()
 export class PatternsService {
   constructor(
-    @InjectRepository(Pattern)
-    private patternRepository: Repository<Pattern>,
+    @InjectRepository(Pattern) private patternsRepository: Repository<Pattern>,
+    private usersService: UsersService,
   ) {}
 
+  create(createPatternInput: CreatePatternInput): Promise<Pattern> {
+    const newPattern = this.patternsRepository.create(createPatternInput);
+
+    return this.patternsRepository.save(newPattern);
+  }
+
   findOneById(id: number): Promise<Pattern> {
-    return this.patternRepository.findOne(id);
+    return this.patternsRepository.findOne(id);
+  }
+
+  findOwner(ownerId: number): Promise<User> {
+    return this.usersService.findOneById(ownerId);
   }
 }
